@@ -392,6 +392,7 @@
 
                         // quit
                         case KEY.QUIT:
+                            room.copyToClipboard();
                             input.poll().disable();
 
                             // TODO: Stop game
