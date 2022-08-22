@@ -441,6 +441,7 @@
         input.poll().disable();
         socket.abort();
         rtcp.stop();
+        window.location.href = room.getLink();
     });
     event.sub(LATENCY_CHECK_REQUESTED, onLatencyCheck);
     event.sub(GAMEPAD_CONNECTED, () => message.show('Gamepad connected'));
