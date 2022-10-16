@@ -70,7 +70,12 @@ func (h *Handler) Run() {
 	}
 }
 
-func (h *Handler) Shutdown(context.Context) error { return nil }
+func (h *Handler) Shutdown(context.Context) error {
+	for _, r := range h.sessions {
+		r.Close()
+	}
+	return nil
+}
 
 func (h *Handler) Prepare() {
 	if !h.cfg.Emulator.Libretro.Cores.Repo.Sync {
