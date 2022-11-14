@@ -1,7 +1,6 @@
 package api
 
 import (
-	"github.com/giongto35/cloud-game/v2/pkg/config/webrtc"
 	"github.com/giongto35/cloud-game/v2/pkg/cws"
 )
 
@@ -55,14 +54,14 @@ func (packet *GameStartCall) From(data string) error { return from(packet, data)
 func (packet *GameStartCall) To() (string, error)    { return to(packet) }
 
 type ConnectionRequest struct {
-	Addr    string             `json:"addr,omitempty"`
-	IsHTTPS bool               `json:"is_https,omitempty"`
-	PingURL string             `json:"ping_url,omitempty"`
-	Port    string             `json:"port,omitempty"`
-	Tag     string             `json:"tag,omitempty"`
-	Zone    string             `json:"zone,omitempty"`
-	Xid     string             `json:"xid,omitempty"`
-	Ice     []webrtc.IceServer `json:"ice,omitempty"`
+	Addr    string `json:"addr,omitempty"`
+	IsHTTPS bool   `json:"is_https,omitempty"`
+	PingURL string `json:"ping_url,omitempty"`
+	Port    string `json:"port,omitempty"`
+	Tag     string `json:"tag,omitempty"`
+	Zone    string `json:"zone,omitempty"`
+	Xid     string `json:"xid,omitempty"`
+	Ice     string `json:"ice,omitempty"`
 }
 
 type GetServerListRequest struct{}

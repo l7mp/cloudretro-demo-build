@@ -7,7 +7,6 @@ import (
 
 	"github.com/rs/xid"
 
-	"github.com/giongto35/cloud-game/v2/pkg/config/webrtc"
 	"github.com/giongto35/cloud-game/v2/pkg/cws"
 	"github.com/gorilla/websocket"
 )
@@ -26,7 +25,7 @@ type WorkerClient struct {
 	Tag            string
 	userCount      int // may be atomic
 	Zone           string
-	Ice            []webrtc.IceServer
+	Ice            string
 
 	mu sync.Mutex
 }

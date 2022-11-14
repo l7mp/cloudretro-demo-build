@@ -13,6 +13,7 @@ import (
 	"github.com/rs/xid"
 
 	"github.com/giongto35/cloud-game/v2/pkg/config/coordinator"
+	"github.com/giongto35/cloud-game/v2/pkg/config/webrtc"
 	"github.com/giongto35/cloud-game/v2/pkg/cws"
 	"github.com/giongto35/cloud-game/v2/pkg/cws/api"
 	"github.com/giongto35/cloud-game/v2/pkg/games"
@@ -116,12 +117,20 @@ func (s *Server) WSO(w http.ResponseWriter, r *http.Request) {
 	addr := getIP(c.RemoteAddr())
 	wc.Printf("id: %v | addr: %v | zone: %v | ping: %v | tag: %v", wc.Id, addr, wc.Zone, wc.PingServer, wc.Tag)
 
-	if wc.Ice == nil {
+	if wc.Ice == "" {
 		log.Printf("No preferred ICE-server is passed, using default coordinator ones.")
 		wc.StunTurnServer = ice.ToJson(s.cfg.Webrtc.IceServers, ice.Replacement{From: "server-ip", To: addr})
 	} else {
 		log.Printf("Preferred ICE-server is passed.")
-		wc.StunTurnServer = ice.ToJson(wc.Ice, ice.Replacement{From: "server-ip", To: addr})
+
+		var iS webrtc.IceServer = ice.NewIceServer(wc.Ice)
+		iS.Credential = s.cfg.Webrtc.IceServers[0].Credential
+		iS.Username = s.cfg.Webrtc.IceServers[0].Username
+		var iSl []webrtc.IceServer
+		iSl = append(iSl, iS)
+		iSl = append(iSl, s.cfg.Webrtc.IceServers...)
+
+		wc.StunTurnServer = ice.ToJson(iSl, ice.Replacement{From: "server-ip", To: addr})
 	}
 
 	// Attach to Server instance with workerID, add defer
