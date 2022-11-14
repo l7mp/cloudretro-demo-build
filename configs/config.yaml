@@ -68,10 +68,7 @@ worker:
     # ISO Alpha-2 country code to group workers by zones
     zone:
     #preferred ICE-server for multicluster setups
-    ice_server: 
-      - url: stun:stun.l.google.com:19302
-      - username: 
-      - credential: 
+    iceserver: stun:stun.l.google.com:19302
 
   monitoring:
     # monitoring server port
