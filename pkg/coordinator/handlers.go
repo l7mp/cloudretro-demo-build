@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"github.com/rs/xid"
 	"log"
 	"math"
 	"net"
 	"net/http"
 	"strings"
+
+	"github.com/rs/xid"
 
 	"github.com/giongto35/cloud-game/v2/pkg/config/coordinator"
 	"github.com/giongto35/cloud-game/v2/pkg/cws"
@@ -110,10 +111,18 @@ func (s *Server) WSO(w http.ResponseWriter, r *http.Request) {
 	wc.PingServer = connRt.PingURL
 	wc.Port = connRt.Port
 	wc.Tag = connRt.Tag
+	wc.Ice = connRt.Ice
 
 	addr := getIP(c.RemoteAddr())
 	wc.Printf("id: %v | addr: %v | zone: %v | ping: %v | tag: %v", wc.Id, addr, wc.Zone, wc.PingServer, wc.Tag)
-	wc.StunTurnServer = ice.ToJson(s.cfg.Webrtc.IceServers, ice.Replacement{From: "server-ip", To: addr})
+
+	if wc.Ice == nil {
+		log.Printf("No preferred ICE-server is passed, using default coordinator ones.")
+		wc.StunTurnServer = ice.ToJson(s.cfg.Webrtc.IceServers, ice.Replacement{From: "server-ip", To: addr})
+	} else {
+		log.Printf("Preferred ICE-server is passed.")
+		wc.StunTurnServer = ice.ToJson(wc.Ice, ice.Replacement{From: "server-ip", To: addr})
+	}
 
 	// Attach to Server instance with workerID, add defer
 	s.workerClients[workerID] = wc

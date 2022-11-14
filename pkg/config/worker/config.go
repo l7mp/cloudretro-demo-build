@@ -35,6 +35,7 @@ type Worker struct {
 		PublicAddress      string
 		Secure             bool
 		Zone               string
+		Ice                []webrtc.IceServer
 	}
 	Server shared.Server
 	Tag    string

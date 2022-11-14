@@ -72,8 +72,11 @@ func (h *Handler) Run() {
 
 func (h *Handler) Shutdown(context.Context) error {
 	for _, r := range h.sessions {
-		r.Close()
+		if r != nil {
+			h.detachPeerConn(r.peerconnection)
+		}
 	}
+	log.Println("Shut down rooms....")
 	return nil
 }
 
@@ -141,6 +144,7 @@ func MakeConnectionRequest(w worker.Worker, address string) (string, error) {
 		Tag:     w.Tag,
 		Zone:    w.Network.Zone,
 		Xid:     xid.New().String(),
+		Ice:     w.Network.Ice,
 	}
 	rez, err := json.Marshal(req)
 	if err != nil {
