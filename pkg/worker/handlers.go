@@ -144,7 +144,7 @@ func MakeConnectionRequest(w worker.Worker, address string) (string, error) {
 		Tag:     w.Tag,
 		Zone:    w.Network.Zone,
 		Xid:     xid.New().String(),
-		Ice:     w.Network.Ice,
+		Ice:     w.Network.Iceserver,
 	}
 	rez, err := json.Marshal(req)
 	if err != nil {

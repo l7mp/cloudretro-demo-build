@@ -35,7 +35,7 @@ type Worker struct {
 		PublicAddress      string
 		Secure             bool
 		Zone               string
-		Ice                string
+		Iceserver          string
 	}
 	Server shared.Server
 	Tag    string
